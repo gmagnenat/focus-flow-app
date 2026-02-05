@@ -4,10 +4,8 @@ import { TimerCard } from './components/TimerCard'
 import { LogList } from './components/LogList.tsx'
 import { formatSeconds } from './utils/format'
 import { buildLogEntry, buildLogLabel, getLatestLogIndex } from './utils/logHelpers'
-import { isValidLogs, isValidTimerLabels, isValidTimerValues } from './utils/validators'
+import { loadState, saveState } from './utils/storage'
 import './App.css'
-
-const STORAGE_KEY = 'focusflow-state'
 
 const defaultTimerLabels: AppState['timerLabels'] = {
   1: 'Timer 1',
@@ -23,48 +21,6 @@ const initialState: AppState = {
   lastSavedAt: Date.now(),
 }
 
-const loadState = (): AppState | null => {
-  const raw = localStorage.getItem(STORAGE_KEY)
-  if (!raw) {
-    return null
-  }
-
-  try {
-    const parsed = JSON.parse(raw) as Partial<AppState>
-    const activeTimerId = parsed.activeTimerId ?? null
-
-    if (
-      ![null, 1, 2, 3].includes(activeTimerId) ||
-      !isValidTimerValues(parsed.timerValues) ||
-      !isValidLogs(parsed.logs) ||
-      typeof parsed.lastSavedAt !== 'number'
-    ) {
-      return null
-    }
-
-    const timerLabels = isValidTimerLabels(parsed.timerLabels)
-      ? parsed.timerLabels
-      : defaultTimerLabels
-
-    return {
-      activeTimerId,
-      timerLabels,
-      timerValues: parsed.timerValues,
-      logs: parsed.logs,
-      lastSavedAt: parsed.lastSavedAt,
-    }
-  } catch {
-    return null
-  }
-}
-
-const saveState = (state: AppState) => {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-  } catch {
-  }
-}
-
 function App() {
   const [state, setState] = useState<AppState>(initialState)
   const [now, setNow] = useState(() => Date.now())
@@ -72,7 +28,7 @@ function App() {
   const activeStartRef = useRef<number | null>(null)
 
   useEffect(() => {
-    const stored = loadState()
+    const stored = loadState(defaultTimerLabels)
     const timestamp = Date.now()
 
     if (stored) {
