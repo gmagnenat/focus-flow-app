@@ -8,6 +8,14 @@ export interface LogEntry {
   duration: number
 }
 
+export interface TimerState {
+  activeTimerId: TimerId
+  activeStartTime: number | null
+  timerLabels: Record<number, string>
+  timerValues: Record<number, number>
+  lastSavedAt: number
+}
+
 export interface AppState {
   activeTimerId: TimerId
   timerLabels: Record<number, string>
