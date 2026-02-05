@@ -69,5 +69,34 @@ export default defineConfig([
       // other options...
     },
   },
-])
+  ])
 ```
+
+## Summary Generation (Gemini)
+
+The app can generate a French summary of logged sessions using the Gemini API.
+
+You can copy the base env vars from `.env.example`.
+
+### Netlify setup (recommended)
+
+This repo includes a Netlify Function proxy so the API key stays server-side.
+
+1. Deploy with Netlify
+   - Build command: `pnpm build`
+   - Publish directory: `dist`
+2. Add Netlify environment variables:
+   - `GEMINI_API_KEY` (required)
+   - `GEMINI_MODEL` (optional, defaults to `gemini-3-flash-preview`)
+3. Generate summaries from the dashboard.
+
+### Local dev
+
+Use the Netlify CLI to run the proxy locally:
+
+```bash
+netlify dev
+```
+
+If you want to bypass the proxy for local testing, you can set `VITE_GEMINI_API_KEY`
+in a local `.env` file.
