@@ -87,7 +87,7 @@ This repo includes a Netlify Function proxy so the API key stays server-side.
    - Publish directory: `dist`
 2. Add Netlify environment variables:
    - `GEMINI_API_KEY` (required)
-   - `GEMINI_MODEL` (optional, defaults to `gemini-3-flash-preview`)
+   - `GEMINI_MODEL` (optional, defaults to `gemini-2-flash`)
 3. Generate summaries from the dashboard.
 
 ### Local dev

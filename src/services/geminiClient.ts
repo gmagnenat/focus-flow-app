@@ -1,6 +1,6 @@
 import type { LogEntry } from '../types'
 
-const DEFAULT_MODEL = 'gemini-3-flash-preview'
+const DEFAULT_MODEL = process.env.VITE_GEMINI_MODEL || 'gemini-2-flash'
 const API_HOST = 'https://generativelanguage.googleapis.com/v1beta/models'
 const PROXY_ENDPOINT = '/.netlify/functions/gemini'
 
