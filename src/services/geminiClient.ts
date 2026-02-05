@@ -115,10 +115,6 @@ export const generateSummary = async (logs: LogEntry[]): Promise<string> => {
   const summaries = buildLabelSummary(trimmedLogs)
   const prompt = buildPrompt(summaries)
 
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY
-  if (apiKey) {
-    return fetchDirect(prompt, model, apiKey)
-  }
-
+  // Always use proxy - never expose API key to client
   return fetchViaProxy(prompt, model)
 }
