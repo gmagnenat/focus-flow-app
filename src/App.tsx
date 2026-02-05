@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import type { AppState } from './types'
 import { TimerCard } from './components/TimerCard'
 import { LogList } from './components/LogList.tsx'
+import { formatSeconds } from './utils/format'
+import { buildLogEntry, buildLogLabel, getLatestLogIndex } from './utils/logHelpers'
 import './App.css'
 
 const STORAGE_KEY = 'focusflow-state'
@@ -95,39 +97,6 @@ const saveState = (state: AppState) => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
-  }
-}
-
-const formatSeconds = (value: number) => {
-  const total = Math.max(0, Math.floor(value))
-  const hours = Math.floor(total / 3600)
-  const minutes = Math.floor((total % 3600) / 60)
-  const seconds = total % 60
-  return [hours, minutes, seconds].map((part) => part.toString().padStart(2, '0')).join(':')
-}
-
-const getLatestLogIndex = (logs: AppState['logs'], timerId: number) => {
-  for (let index = logs.length - 1; index >= 0; index -= 1) {
-    if (logs[index].timerId === timerId) {
-      return index
-    }
-  }
-
-  return -1
-}
-
-const buildLogLabel = (label: string, timerId: number) => {
-  const trimmed = label.trim()
-  return trimmed.length > 0 ? trimmed : `Unnamed Task [${timerId}]`
-}
-
-const buildLogEntry = (timerId: number, label: string, startTime: number) => {
-  return {
-    id: crypto.randomUUID(),
-    timerId,
-    label: buildLogLabel(label, timerId),
-    startTime,
-    duration: 0,
   }
 }
 
