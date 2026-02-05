@@ -62,27 +62,6 @@ const parseGeminiResponse = async (response: Response): Promise<string> => {
   return text.trim()
 }
 
-const fetchDirect = async (prompt: string, model: string, apiKey: string) => {
-  const response = await fetch(
-    `${API_HOST}/${model}:generateContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [{ text: prompt }],
-          },
-        ],
-      }),
-    }
-  )
-
-  return parseGeminiResponse(response)
-}
-
 const fetchViaProxy = async (prompt: string, model: string) => {
   const response = await fetch(PROXY_ENDPOINT, {
     method: 'POST',
