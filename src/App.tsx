@@ -4,6 +4,7 @@ import { TimerCard } from './components/TimerCard'
 import { LogList } from './components/LogList.tsx'
 import { formatSeconds } from './utils/format'
 import { buildLogEntry, buildLogLabel, getLatestLogIndex } from './utils/logHelpers'
+import { isValidLogs, isValidTimerLabels, isValidTimerValues } from './utils/validators'
 import './App.css'
 
 const STORAGE_KEY = 'focusflow-state'
@@ -20,42 +21,6 @@ const initialState: AppState = {
   timerValues: { 1: 0, 2: 0, 3: 0 },
   logs: [],
   lastSavedAt: Date.now(),
-}
-
-const isValidTimerValues = (value: unknown): value is AppState['timerValues'] => {
-  if (!value || typeof value !== 'object') {
-    return false
-  }
-
-  const record = value as Record<number, unknown>
-  return [1, 2, 3].every((id) => typeof record[id] === 'number')
-}
-
-const isValidLogs = (value: unknown): value is AppState['logs'] => {
-  if (!Array.isArray(value)) {
-    return false
-  }
-
-  return value.every((entry) =>
-    Boolean(
-      entry &&
-        typeof entry === 'object' &&
-        typeof (entry as { id?: unknown }).id === 'string' &&
-        typeof (entry as { timerId?: unknown }).timerId === 'number' &&
-        typeof (entry as { label?: unknown }).label === 'string' &&
-        typeof (entry as { startTime?: unknown }).startTime === 'number' &&
-        typeof (entry as { duration?: unknown }).duration === 'number'
-    )
-  )
-}
-
-const isValidTimerLabels = (value: unknown): value is AppState['timerLabels'] => {
-  if (!value || typeof value !== 'object') {
-    return false
-  }
-
-  const record = value as Record<number, unknown>
-  return [1, 2, 3].every((id) => typeof record[id] === 'string')
 }
 
 const loadState = (): AppState | null => {
