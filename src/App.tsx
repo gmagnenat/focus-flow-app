@@ -5,6 +5,7 @@ import { LogList } from './components/LogList.tsx'
 import { formatSeconds } from './utils/format'
 import { buildLogEntry, buildLogLabel, getLatestLogIndex } from './utils/logHelpers'
 import { loadState, saveState } from './utils/storage'
+import { timerService } from './services/TimerService'
 import './App.css'
 
 const defaultTimerLabels: AppState['timerLabels'] = {
@@ -35,7 +36,7 @@ function App() {
       if (stored.activeTimerId !== null) {
         const gapSeconds = Math.max(
           0,
-          Math.floor((timestamp - stored.lastSavedAt) / 1000)
+          timerService.calculateElapsedSeconds(stored.lastSavedAt, timestamp)
         )
         const logs = [...stored.logs]
         const logIndex = getLatestLogIndex(logs, stored.activeTimerId)
@@ -102,46 +103,6 @@ function App() {
     return () => window.clearInterval(interval)
   }, [state.activeTimerId])
 
-  const commitActiveTimer = useCallback(
-    (draft: AppState, timestamp: number, startTime: number | null) => {
-      if (draft.activeTimerId === null || startTime === null) {
-        return draft
-      }
-
-      const elapsedSeconds = Math.floor(
-        (timestamp - startTime) / 1000
-      )
-      const logs = [...draft.logs]
-      const logIndex = getLatestLogIndex(logs, draft.activeTimerId)
-
-      if (logIndex === -1) {
-        const entry = buildLogEntry(
-          draft.activeTimerId,
-          draft.timerLabels[draft.activeTimerId],
-          startTime
-        )
-        entry.duration += elapsedSeconds
-        logs.push(entry)
-      } else {
-        logs[logIndex] = {
-          ...logs[logIndex],
-          duration: logs[logIndex].duration + elapsedSeconds,
-        }
-      }
-
-      return {
-        ...draft,
-        logs,
-        timerValues: {
-          ...draft.timerValues,
-          [draft.activeTimerId]:
-            draft.timerValues[draft.activeTimerId] + elapsedSeconds,
-        },
-      }
-    },
-    []
-  )
-
   const handleToggleTimer = useCallback(
     (timerId: 1 | 2 | 3) => {
       const timestamp = Date.now()
@@ -151,24 +112,34 @@ function App() {
       const previousActiveStart = activeStartRef.current
 
       setState((prev) => {
+        const result = timerService.commitActiveTimer(
+          prev.activeTimerId,
+          previousActiveStart,
+          prev.logs,
+          prev.timerValues,
+          prev.timerLabels,
+          timestamp
+        )
+
         if (prev.activeTimerId === timerId) {
           // Stopping the timer
-          const committed = commitActiveTimer(prev, timestamp, previousActiveStart)
           return {
-            ...committed,
+            ...prev,
             activeTimerId: null,
+            logs: result.logs,
+            timerValues: result.timerValues,
           }
         }
 
         // Starting a new timer
-        const committed = commitActiveTimer(prev, timestamp, previousActiveStart)
         return {
-          ...committed,
+          ...prev,
           activeTimerId: timerId,
           logs: [
-            ...committed.logs,
-            buildLogEntry(timerId, committed.timerLabels[timerId], timestamp),
+            ...result.logs,
+            buildLogEntry(timerId, prev.timerLabels[timerId], timestamp),
           ],
+          timerValues: result.timerValues,
         }
       })
       
@@ -181,7 +152,7 @@ function App() {
         activeStartRef.current = timestamp
       }
     },
-    [commitActiveTimer]
+    [state.activeTimerId]
   )
 
   const handleTimerLabelChange = useCallback(
@@ -233,34 +204,23 @@ function App() {
 
   const getTimerSeconds = useCallback(
     (timerId: 1 | 2 | 3) => {
-      const base = state.timerValues[timerId]
-      if (state.activeTimerId !== timerId || activeStartRef.current === null) {
-        return base
-      }
-
-      return base + (now - activeStartRef.current) / 1000
+      return timerService.calculateTimerSeconds(
+        timerId,
+        state.timerValues,
+        state.activeTimerId,
+        activeStartRef.current,
+        now
+      )
     },
     [now, state.activeTimerId, state.timerValues]
   )
 
-  const activeLogIndex = state.activeTimerId
-    ? getLatestLogIndex(state.logs, state.activeTimerId)
-    : -1
-
-  const displayLogs = state.logs.map((entry, index) => {
-    if (
-      index === activeLogIndex &&
-      state.activeTimerId !== null &&
-      activeStartRef.current !== null
-    ) {
-      return {
-        ...entry,
-        duration: entry.duration + (now - activeStartRef.current) / 1000,
-      }
-    }
-
-    return entry
-  })
+  const displayLogs = timerService.calculateDisplayLogs(
+    state.logs,
+    state.activeTimerId,
+    activeStartRef.current,
+    now
+  )
 
   return (
     <main className="app">
