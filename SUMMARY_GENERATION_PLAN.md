@@ -4,7 +4,7 @@
 Add summary generation using the Gemini Generative Language API with short bullets and total time per grouped project.
 
 ## Model + Env
-- Model: `gemini-3-flash-preview` (default)
+- Model: `gemini-2-flash` (default)
 - API key: `VITE_GEMINI_API_KEY`
 - Optional override: `VITE_GEMINI_MODEL`
 

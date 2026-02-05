@@ -1,4 +1,4 @@
-const DEFAULT_MODEL = 'gemini-3-flash-preview'
+const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-2-flash'
 const API_HOST = 'https://generativelanguage.googleapis.com/v1beta/models'
 
 type NetlifyEvent = {
