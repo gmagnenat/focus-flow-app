@@ -1,0 +1,154 @@
+#root {
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  max-width: 1100px;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  color: #1b1b1d;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.app__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.app__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: #6a6a6f;
+  margin: 0;
+}
+
+.app__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0;
+}
+
+.app__subtitle {
+  margin: 0;
+  color: #4a4a50;
+}
+
+.app__timers {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.app__card {
+  border: 1px solid #e2e2e8;
+  border-radius: 16px;
+  padding: 1.5rem;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.app__card--active {
+  border-color: #1b1b1d;
+  background: #f4f4f6;
+  box-shadow: 0 12px 30px rgba(27, 27, 29, 0.08);
+}
+
+.app__card-title {
+  margin: 0;
+  font-size: 1rem;
+  color: #4a4a50;
+}
+
+.app__card-input {
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0;
+  color: #1b1b1d;
+  width: 100%;
+}
+
+.app__card-input:focus {
+  outline: 2px solid #1b1b1d;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.app__card-time {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.app__card-button {
+  align-self: flex-start;
+  border: none;
+  background: #1b1b1d;
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.app__card-button--stop {
+  background: #c3423f;
+}
+
+.app__section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+.app__placeholder {
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px dashed #d2d2da;
+  color: #7a7a82;
+  background: #fff;
+}
+
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.log-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #e2e2e8;
+  background: #fff;
+}
+
+.log-item__input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+}
+
+.log-item__input:focus {
+  outline: 2px solid #1b1b1d;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.log-item__duration {
+  font-variant-numeric: tabular-nums;
+  color: #4a4a50;
+}
+
+.app__footer {
+  font-size: 0.9rem;
+  color: #6a6a70;
+}
