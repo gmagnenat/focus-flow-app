@@ -1,7 +1,6 @@
 import type { LogEntry } from '../types'
 
 const DEFAULT_MODEL = import.meta.env.VITE_GEMINI_MODEL || 'gemini-2-flash'
-const API_HOST = 'https://generativelanguage.googleapis.com/v1beta/models'
 const PROXY_ENDPOINT = '/.netlify/functions/gemini'
 
 const buildPrompt = (summaries: Array<{ label: string; totalSeconds: number; sessions: number }>): string => {
@@ -43,44 +42,6 @@ const buildLabelSummary = (logs: LogEntry[]): Array<{ label: string; totalSecond
   return Array.from(totals.values()).sort(
     (a, b) => b.totalSeconds - a.totalSeconds
   )
-}
-
-const parseGeminiResponse = async (response: Response): Promise<string> => {
-  if (!response.ok) {
-    throw new Error('Failed to generate summary.')
-  }
-
-  const data = (await response.json()) as {
-    candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>
-  }
-
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text
-  if (!text) {
-    throw new Error('No summary returned.')
-  }
-
-  return text.trim()
-}
-
-const fetchDirect = async (prompt: string, model: string, apiKey: string) => {
-  const response = await fetch(
-    `${API_HOST}/${model}:generateContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [{ text: prompt }],
-          },
-        ],
-      }),
-    }
-  )
-
-  return parseGeminiResponse(response)
 }
 
 const fetchViaProxy = async (prompt: string, model: string) => {

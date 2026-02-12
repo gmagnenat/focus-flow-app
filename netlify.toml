@@ -4,3 +4,7 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Omit model names from secrets scanning - they're public information, not secrets
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_GEMINI_MODEL,GEMINI_MODEL"
