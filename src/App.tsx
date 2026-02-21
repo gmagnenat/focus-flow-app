@@ -4,6 +4,7 @@ import type { TimerState } from './types'
 import { TimerCard } from './components/TimerCard'
 import { LogList } from './components/LogList.tsx'
 import { formatSeconds } from './utils/format'
+import { clearState } from './utils/storage'
 import { usePersistence } from './hooks/usePersistence'
 import { useTimerState } from './hooks/useTimerState'
 import { generateSummary } from './services/geminiClient'
@@ -35,6 +36,7 @@ function App() {
     updateTimerLabel,
     updateLogLabel,
     validateLogLabel,
+    deleteLog,
     getTimerSeconds,
     getDisplayLogs,
   } = useTimerState(initialTimerState, [])
@@ -169,6 +171,18 @@ function App() {
     URL.revokeObjectURL(url)
   }, [buildExportPayload, summaryText])
 
+  const handleClearAll = useCallback(() => {
+    const timestamp = Date.now()
+    clearState()
+    setTimerState({
+      ...initialTimerState,
+      lastSavedAt: timestamp,
+    })
+    setLogs([])
+    setNow(timestamp)
+    summaryMutation.reset()
+  }, [setTimerState, setLogs, summaryMutation])
+
   useEffect(() => {
     if (timerState.activeTimerId === null) {
       return
@@ -205,6 +219,11 @@ function App() {
     [getTimerSeconds, now]
   )
 
+  const totalSeconds = useMemo(
+    () => timer1Seconds + timer2Seconds + timer3Seconds,
+    [timer1Seconds, timer2Seconds, timer3Seconds]
+  )
+
   const displayLogs = useMemo(
     () => getDisplayLogs(now),
     [getDisplayLogs, now]
@@ -217,6 +236,11 @@ function App() {
         <h1 className="app__title">Timer Dashboard</h1>
         <p className="app__subtitle">Skeleton layout for Phase 1 buildout.</p>
       </header>
+
+      <section className="app__global-timer" aria-label="Daily total">
+        <span className="app__global-timer-label">Daily Total</span>
+        <span className="app__global-timer-time">{formatSeconds(totalSeconds)}</span>
+      </section>
 
       <section className="app__timers" aria-label="Timers">
         <TimerCard
@@ -255,6 +279,7 @@ function App() {
             formatDuration={formatSeconds}
             onLabelChange={updateLogLabel}
             onLabelBlur={validateLogLabel}
+            onDelete={deleteLog}
           />
         )}
       </section>
@@ -317,6 +342,13 @@ function App() {
 
       <footer className="app__footer">
         <span>Active timer: {timerState.activeTimerId ?? 'None'}</span>
+        <button
+          className="app__clear-button"
+          type="button"
+          onClick={handleClearAll}
+        >
+          Clear All Data
+        </button>
       </footer>
     </main>
   )

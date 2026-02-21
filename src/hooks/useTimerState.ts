@@ -12,6 +12,7 @@ interface UseTimerStateReturn {
   updateTimerLabel: (timerId: 1 | 2 | 3, value: string) => void
   updateLogLabel: (logId: string, value: string) => void
   validateLogLabel: (logId: string) => void
+  deleteLog: (logId: string) => void
   getTimerSeconds: (timerId: 1 | 2 | 3, now: number) => number
   getDisplayLogs: (now: number) => LogEntry[]
 }
@@ -124,6 +125,29 @@ export const useTimerState = (
     [logs]
   )
 
+  const deleteLog = useCallback(
+    (logId: string) => {
+      const entry = logs.find((log) => log.id === logId)
+      if (!entry) return
+
+      const timestamp = Date.now()
+
+      setLogs(logs.filter((log) => log.id !== logId))
+      setTimerState((prev) => ({
+        ...prev,
+        timerValues: {
+          ...prev.timerValues,
+          [entry.timerId]: Math.max(
+            0,
+            (prev.timerValues[entry.timerId] || 0) - entry.duration
+          ),
+        },
+        lastSavedAt: timestamp,
+      }))
+    },
+    [logs]
+  )
+
   const getTimerSeconds = useCallback(
     (timerId: 1 | 2 | 3, now: number) =>
       timerService.calculateTimerSeconds(
@@ -156,6 +180,7 @@ export const useTimerState = (
     updateTimerLabel,
     updateLogLabel,
     validateLogLabel,
+    deleteLog,
     getTimerSeconds,
     getDisplayLogs,
   }

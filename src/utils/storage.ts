@@ -43,6 +43,11 @@ export const loadState = (
 export const saveState = (state: AppState): void => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-  } catch {
+  } catch(error) {
+    console.error('Failed to save state:', error)
   }
+}
+
+export const clearState = (): void => {
+  localStorage.removeItem(STORAGE_KEY)
 }
