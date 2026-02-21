@@ -6,6 +6,7 @@ interface LogListProps {
   formatDuration: (value: number) => string
   onLabelChange: (id: string, value: string) => void
   onLabelBlur: (id: string) => void
+  onDelete: (id: string) => void
 }
 
 export const LogList = ({
@@ -13,6 +14,7 @@ export const LogList = ({
   formatDuration,
   onLabelChange,
   onLabelBlur,
+  onDelete,
 }: LogListProps) => {
   return (
     <div className="log-list">
@@ -23,6 +25,7 @@ export const LogList = ({
           formattedDuration={formatDuration(entry.duration)}
           onLabelChange={onLabelChange}
           onLabelBlur={onLabelBlur}
+          onDelete={onDelete}
         />
       ))}
     </div>

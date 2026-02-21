@@ -16,7 +16,7 @@ export const TimerCard = ({
   onLabelChange,
 }: TimerCardProps) => {
   return (
-    <article className={`app__card${isActive ? ' app__card--active' : ''}`}>
+    <article className={`app__card${isActive ? ' app__card--active' : ''}`} data-timer={timerId}>
       <input
         className="app__card-input"
         value={label}
