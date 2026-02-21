@@ -24,6 +24,9 @@
   --border: #222c3f;
   --border-strong: #2e3b54;
   --shadow: 0 20px 50px rgba(5, 8, 15, 0.55);
+  --timer-1: #38b2ac;
+  --timer-2: #a78bfa;
+  --timer-3: #f6ad55;
 }
 
 * {
