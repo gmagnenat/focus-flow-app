@@ -41,6 +41,32 @@
   color: var(--text-2);
 }
 
+.app__global-timer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.75rem;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: linear-gradient(160deg, var(--surface-2), var(--surface-1));
+  box-shadow: 0 16px 30px rgba(6, 9, 16, 0.4);
+}
+
+.app__global-timer-label {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.app__global-timer-time {
+  font-size: 2.4rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-1);
+}
+
 .app__timers {
   display: grid;
   gap: 1.5rem;
@@ -49,6 +75,7 @@
 
 .app__card {
   border: 1px solid var(--border);
+  border-left: 3px solid transparent;
   border-radius: 18px;
   padding: 1.6rem;
   background: linear-gradient(160deg, var(--surface-2), var(--surface-1));
@@ -59,10 +86,35 @@
   transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.app__card[data-timer="1"] {
+  border-left-color: var(--timer-1);
+}
+
+.app__card[data-timer="2"] {
+  border-left-color: var(--timer-2);
+}
+
+.app__card[data-timer="3"] {
+  border-left-color: var(--timer-3);
+}
+
 .app__card--active {
-  border-color: rgba(56, 178, 172, 0.8);
-  box-shadow: 0 24px 40px rgba(7, 16, 26, 0.55);
   transform: translateY(-3px);
+}
+
+.app__card--active[data-timer="1"] {
+  border-color: var(--timer-1);
+  box-shadow: 0 24px 40px rgba(56, 178, 172, 0.15);
+}
+
+.app__card--active[data-timer="2"] {
+  border-color: var(--timer-2);
+  box-shadow: 0 24px 40px rgba(167, 139, 250, 0.15);
+}
+
+.app__card--active[data-timer="3"] {
+  border-color: var(--timer-3);
+  box-shadow: 0 24px 40px rgba(246, 173, 85, 0.15);
 }
 
 .app__card-title {
@@ -157,8 +209,39 @@
 }
 
 .log-item:hover {
-  border-color: rgba(56, 178, 172, 0.4);
   transform: translateY(-1px);
+}
+
+.log-item[data-timer="1"]:hover {
+  border-color: rgba(56, 178, 172, 0.4);
+}
+
+.log-item[data-timer="2"]:hover {
+  border-color: rgba(167, 139, 250, 0.4);
+}
+
+.log-item[data-timer="3"]:hover {
+  border-color: rgba(246, 173, 85, 0.4);
+}
+
+.log-item__dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+
+[data-timer="1"] > .log-item__dot {
+  background: var(--timer-1);
+}
+
+[data-timer="2"] > .log-item__dot {
+  background: var(--timer-2);
+}
+
+[data-timer="3"] > .log-item__dot {
+  background: var(--timer-3);
 }
 
 .log-item__input {
@@ -184,11 +267,60 @@
   color: var(--text-2);
 }
 
+.log-item__delete {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-3);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.25rem 0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.log-item:hover .log-item__delete {
+  opacity: 1;
+}
+
+.log-item__delete:hover {
+  color: rgba(245, 130, 130, 0.95);
+  background: rgba(245, 101, 101, 0.12);
+}
+
+.log-item__delete:focus-visible {
+  opacity: 1;
+  outline: 2px solid rgba(245, 101, 101, 0.6);
+  outline-offset: 2px;
+}
+
 .app__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 0.9rem;
   color: var(--text-3);
   border-top: 1px solid var(--border);
   padding-top: 1rem;
+}
+
+.app__clear-button {
+  border: 1px solid rgba(245, 101, 101, 0.4);
+  background: transparent;
+  color: rgba(245, 130, 130, 0.9);
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.app__clear-button:hover {
+  background: rgba(245, 101, 101, 0.12);
+  border-color: rgba(245, 101, 101, 0.6);
 }
 
 .app__logs,
@@ -291,19 +423,23 @@
 }
 
 .app > *:nth-child(2) {
-  animation-delay: 0.15s;
+  animation-delay: 0.12s;
 }
 
 .app > *:nth-child(3) {
-  animation-delay: 0.25s;
+  animation-delay: 0.2s;
 }
 
 .app > *:nth-child(4) {
-  animation-delay: 0.35s;
+  animation-delay: 0.28s;
 }
 
 .app > *:nth-child(5) {
-  animation-delay: 0.45s;
+  animation-delay: 0.36s;
+}
+
+.app > *:nth-child(6) {
+  animation-delay: 0.44s;
 }
 
 @keyframes fadeUp {
