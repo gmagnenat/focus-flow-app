@@ -1,5 +1,6 @@
-const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-2-flash'
+const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-3-flash-preview'
 const API_HOST = 'https://generativelanguage.googleapis.com/v1beta/models'
+const FETCH_TIMEOUT_MS = 25_000
 
 type NetlifyEvent = {
   httpMethod: string
@@ -34,22 +35,31 @@ export const handler = async (event: NetlifyEvent) => {
       }
     }
 
-    const response = await fetch(
-      `${API_HOST}/${model}:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [{ text: prompt }],
-            },
-          ],
-        }),
-      }
-    )
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+
+    let response: Response
+    try {
+      response = await fetch(
+        `${API_HOST}/${model}:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [{ text: prompt }],
+              },
+            ],
+          }),
+          signal: controller.signal,
+        }
+      )
+    } finally {
+      clearTimeout(timeoutId)
+    }
 
     if (!response.ok) {
       return {
