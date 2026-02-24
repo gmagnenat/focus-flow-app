@@ -1,6 +1,6 @@
 import type { LogEntry } from '../types'
 
-const DEFAULT_MODEL = import.meta.env.VITE_GEMINI_MODEL || 'gemini-2-flash'
+const DEFAULT_MODEL = import.meta.env.VITE_GEMINI_MODEL || 'gemini-3-flash-preview'
 const PROXY_ENDPOINT = '/.netlify/functions/gemini'
 
 const buildPrompt = (summaries: Array<{ label: string; totalSeconds: number; sessions: number }>): string => {
