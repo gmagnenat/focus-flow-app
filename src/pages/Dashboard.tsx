@@ -2,6 +2,7 @@ import { useMemo, useState, useCallback } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { TimerCard } from '../components/TimerCard'
 import { LogList } from '../components/LogList'
+import { ManualEntryForm } from '../components/ManualEntryForm'
 import { formatSeconds } from '../utils/format'
 import { generateSummary } from '../services/geminiClient'
 import { useLogContext } from '../context/LogContext'
@@ -99,6 +100,8 @@ export const Dashboard = () => {
         <TimerCard timerId={2} label={timerState.timerLabels[2]} isActive={timerState.activeTimerId === 2} formattedTime={formatSeconds(getTimerSeconds(2))} onToggle={toggleTimer} onLabelChange={updateTimerLabel} />
         <TimerCard timerId={3} label={timerState.timerLabels[3]} isActive={timerState.activeTimerId === 3} formattedTime={formatSeconds(getTimerSeconds(3))} onToggle={toggleTimer} onLabelChange={updateTimerLabel} />
       </section>
+
+      <ManualEntryForm />
 
       <section className="app__logs" aria-label="Activity log">
         <h2 className="app__section-title">Activity Log</h2>
