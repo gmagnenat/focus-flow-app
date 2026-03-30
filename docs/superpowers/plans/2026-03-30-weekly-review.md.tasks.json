@@ -1,0 +1,71 @@
+{
+  "planPath": "docs/superpowers/plans/2026-03-30-weekly-review.md",
+  "tasks": [
+    {
+      "id": 17,
+      "subject": "Task 0: Install dependencies and set up Vitest",
+      "status": "completed",
+      "lastUpdated": "2026-03-30T14:03:00Z",
+      "description": "**Goal:** Add date-fns and Vitest.\n\n```json:metadata\n{\"files\": [\"package.json\", \"vitest.config.ts\"], \"verifyCommand\": \"npx vitest run\", \"acceptanceCriteria\": [\"date-fns installed\", \"vitest installed\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 18,
+      "subject": "Task 1: Extend data model and build migration runner",
+      "status": "completed",
+      "lastUpdated": "2026-03-30T14:07:00Z",
+      "blockedBy": [17],
+      "description": "**Goal:** Extend LogEntry, build migration runner.\n\n```json:metadata\n{\"files\": [\"src/types.ts\", \"src/utils/storage.ts\", \"src/utils/validators.ts\", \"src/utils/__tests__/storage.test.ts\"], \"verifyCommand\": \"npx vitest run src/utils/__tests__/storage.test.ts\", \"acceptanceCriteria\": [\"LogEntry extended\", \"migration works\", \"tests pass\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 19,
+      "subject": "Task 2: Convert timer to block-based logging",
+      "status": "completed",
+      "lastUpdated": "2026-03-30T14:09:00Z",
+      "blockedBy": [18],
+      "description": "**Goal:** Block-based entries with real start/end.\n\n```json:metadata\n{\"files\": [\"src/utils/logHelpers.ts\", \"src/services/TimerService.ts\", \"src/hooks/useTimerState.ts\"], \"verifyCommand\": \"npx tsc -b\", \"acceptanceCriteria\": [\"block entries\", \"real timestamps\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 20,
+      "subject": "Task 3: Set up routing and shared state context",
+      "status": "pending",
+      "blockedBy": [19],
+      "description": "**Goal:** TanStack Router + LogContext + Dashboard extraction.\n\n```json:metadata\n{\"files\": [\"src/context/LogContext.tsx\", \"src/pages/Dashboard.tsx\", \"src/pages/Review.tsx\", \"src/App.tsx\", \"src/main.tsx\"], \"verifyCommand\": \"npm run dev\", \"acceptanceCriteria\": [\"routing works\", \"dashboard functional\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 21,
+      "subject": "Task 4: Build insights engine with tests",
+      "status": "pending",
+      "blockedBy": [18],
+      "description": "**Goal:** computeInsights + useInsights + tests.\n\n```json:metadata\n{\"files\": [\"src/utils/insights.ts\", \"src/utils/__tests__/insights.test.ts\", \"src/hooks/useInsights.ts\"], \"verifyCommand\": \"npx vitest run src/utils/__tests__/insights.test.ts\", \"acceptanceCriteria\": [\"insights correct\", \"tests pass\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 22,
+      "subject": "Task 5: Manual entry form and log editing",
+      "status": "pending",
+      "blockedBy": [20],
+      "description": "**Goal:** Manual entry + inline edit for today.\n\n```json:metadata\n{\"files\": [\"src/components/ManualEntryForm.tsx\", \"src/components/LogItemEdit.tsx\", \"src/components/LogItem.tsx\", \"src/utils/__tests__/validators.test.ts\"], \"verifyCommand\": \"npx vitest run src/utils/__tests__/validators.test.ts\", \"acceptanceCriteria\": [\"manual entry works\", \"editing works\", \"tests pass\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 23,
+      "subject": "Task 6: Build Weekly Review UI",
+      "status": "pending",
+      "blockedBy": [20, 21],
+      "description": "**Goal:** StatsGrid + DailyChart + AiNarrative + Review page.\n\n```json:metadata\n{\"files\": [\"src/components/StatsGrid.tsx\", \"src/components/DailyChart.tsx\", \"src/components/AiNarrative.tsx\", \"src/pages/Review.tsx\"], \"verifyCommand\": \"npm run dev\", \"acceptanceCriteria\": [\"stats grid\", \"chart\", \"AI narrative\", \"backup\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 24,
+      "subject": "Task 7: Upgrade Gemini prompt for Weekly Review",
+      "status": "pending",
+      "blockedBy": [21],
+      "description": "**Goal:** generateReviewNarrative with PeriodInsights.\n\n```json:metadata\n{\"files\": [\"src/services/geminiClient.ts\"], \"verifyCommand\": \"npx tsc -b\", \"acceptanceCriteria\": [\"new function\", \"French prompt\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 25,
+      "subject": "Task 8: Final integration and full test run",
+      "status": "pending",
+      "blockedBy": [22, 23, 24],
+      "description": "**Goal:** Verify everything works together.\n\n```json:metadata\n{\"files\": [], \"verifyCommand\": \"npm run build && npx vitest run\", \"acceptanceCriteria\": [\"types pass\", \"tests pass\", \"build succeeds\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-03-30T14:09:00Z"
+}
