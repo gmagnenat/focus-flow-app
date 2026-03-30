@@ -1,11 +1,16 @@
 export type TimerId = 1 | 2 | 3 | null
 
+export type LogSource = 'timer' | 'manual'
+
 export interface LogEntry {
   id: string
   timerId: number
   label: string
   startTime: number
+  endTime: number
   duration: number
+  source: LogSource
+  note?: string
 }
 
 export interface TimerState {

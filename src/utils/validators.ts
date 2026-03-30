@@ -39,3 +39,28 @@ export const isValidTimerLabels = (
   const record = value as Record<number, unknown>
   return [1, 2, 3].every((id) => typeof record[id] === 'string')
 }
+
+export const isValidTimeRange = (
+  startTime: number,
+  endTime: number
+): boolean => {
+  return endTime > startTime && startTime > 0
+}
+
+export const findOverlappingLog = (
+  logs: AppState['logs'],
+  timerId: number,
+  startTime: number,
+  endTime: number,
+  excludeId?: string
+): AppState['logs'][number] | null => {
+  return (
+    logs.find(
+      (log) =>
+        log.timerId === timerId &&
+        log.id !== excludeId &&
+        log.startTime < endTime &&
+        log.endTime > startTime
+    ) ?? null
+  )
+}

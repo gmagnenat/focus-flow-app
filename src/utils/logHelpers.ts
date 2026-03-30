@@ -25,6 +25,16 @@ export const buildLogEntry = (
     timerId,
     label: buildLogLabel(label, timerId),
     startTime,
+    endTime: startTime,
     duration: 0,
+    source: 'timer',
   }
+}
+
+export const finalizeLogEntry = (
+  entry: LogEntry,
+  endTime: number
+): LogEntry => {
+  const duration = Math.max(0, Math.floor((endTime - entry.startTime) / 1000))
+  return { ...entry, endTime, duration }
 }

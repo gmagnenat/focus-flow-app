@@ -1,5 +1,5 @@
 import type { LogEntry } from '../types'
-import { buildLogEntry, getLatestLogIndex } from '../utils/logHelpers'
+import { finalizeLogEntry, getLatestLogIndex } from '../utils/logHelpers'
 
 export interface TimeProvider {
   now: () => number
@@ -25,7 +25,7 @@ export class TimerService {
     startTime: number | null,
     logs: LogEntry[],
     timerValues: Record<number, number>,
-    timerLabels: Record<number, string>,
+    _timerLabels: Record<number, string>,
     timestamp: number
   ): { logs: LogEntry[]; timerValues: Record<number, number> } {
     if (activeTimerId === null || startTime === null) {
@@ -36,19 +36,9 @@ export class TimerService {
     const updatedLogs = [...logs]
     const logIndex = getLatestLogIndex(updatedLogs, activeTimerId)
 
-    if (logIndex === -1) {
-      const entry = buildLogEntry(
-        activeTimerId,
-        timerLabels[activeTimerId],
-        startTime
-      )
-      entry.duration += elapsedSeconds
-      updatedLogs.push(entry)
-    } else {
-      updatedLogs[logIndex] = {
-        ...updatedLogs[logIndex],
-        duration: updatedLogs[logIndex].duration + elapsedSeconds,
-      }
+    if (logIndex !== -1 && updatedLogs[logIndex].endTime === updatedLogs[logIndex].startTime) {
+      // Finalize the open entry (endTime === startTime means it's still open)
+      updatedLogs[logIndex] = finalizeLogEntry(updatedLogs[logIndex], timestamp)
     }
 
     return {
@@ -91,9 +81,11 @@ export class TimerService {
 
     return logs.map((entry, index) => {
       if (index === activeLogIndex) {
+        const elapsed = Math.floor((now - activeStartTime) / 1000)
         return {
           ...entry,
-          duration: entry.duration + (now - activeStartTime) / 1000,
+          endTime: now,
+          duration: elapsed,
         }
       }
       return entry

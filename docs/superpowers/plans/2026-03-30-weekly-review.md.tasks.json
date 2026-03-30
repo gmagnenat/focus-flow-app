@@ -4,20 +4,23 @@
     {
       "id": 17,
       "subject": "Task 0: Install dependencies and set up Vitest",
-      "status": "pending",
+      "status": "completed",
+      "lastUpdated": "2026-03-30T14:03:00Z",
       "description": "**Goal:** Add date-fns and Vitest.\n\n```json:metadata\n{\"files\": [\"package.json\", \"vitest.config.ts\"], \"verifyCommand\": \"npx vitest run\", \"acceptanceCriteria\": [\"date-fns installed\", \"vitest installed\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 18,
       "subject": "Task 1: Extend data model and build migration runner",
-      "status": "pending",
+      "status": "completed",
+      "lastUpdated": "2026-03-30T14:07:00Z",
       "blockedBy": [17],
       "description": "**Goal:** Extend LogEntry, build migration runner.\n\n```json:metadata\n{\"files\": [\"src/types.ts\", \"src/utils/storage.ts\", \"src/utils/validators.ts\", \"src/utils/__tests__/storage.test.ts\"], \"verifyCommand\": \"npx vitest run src/utils/__tests__/storage.test.ts\", \"acceptanceCriteria\": [\"LogEntry extended\", \"migration works\", \"tests pass\"], \"requiresUserVerification\": false}\n```"
     },
     {
       "id": 19,
       "subject": "Task 2: Convert timer to block-based logging",
-      "status": "pending",
+      "status": "completed",
+      "lastUpdated": "2026-03-30T14:09:00Z",
       "blockedBy": [18],
       "description": "**Goal:** Block-based entries with real start/end.\n\n```json:metadata\n{\"files\": [\"src/utils/logHelpers.ts\", \"src/services/TimerService.ts\", \"src/hooks/useTimerState.ts\"], \"verifyCommand\": \"npx tsc -b\", \"acceptanceCriteria\": [\"block entries\", \"real timestamps\"], \"requiresUserVerification\": false}\n```"
     },
@@ -64,5 +67,5 @@
       "description": "**Goal:** Verify everything works together.\n\n```json:metadata\n{\"files\": [], \"verifyCommand\": \"npm run build && npx vitest run\", \"acceptanceCriteria\": [\"types pass\", \"tests pass\", \"build succeeds\"], \"requiresUserVerification\": false}\n```"
     }
   ],
-  "lastUpdated": "2026-03-30T11:45:00Z"
+  "lastUpdated": "2026-03-30T14:09:00Z"
 }
