@@ -21,6 +21,31 @@
   box-shadow: var(--shadow);
 }
 
+.app__nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.app__nav-link {
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-3);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+
+.app__nav-link:hover {
+  color: var(--text-2);
+  background: var(--surface-2);
+}
+
+.app__nav-link--active {
+  color: var(--accent);
+  background: rgba(56, 178, 172, 0.1);
+}
+
 .app__eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.2em;
