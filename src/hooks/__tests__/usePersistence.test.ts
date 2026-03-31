@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { startOfDay, endOfDay } from 'date-fns'
+import { endOfDay } from 'date-fns'
 import { handleDayBoundary } from '../usePersistence'
 import type { AppState } from '../../types'
 
