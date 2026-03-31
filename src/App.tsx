@@ -5,6 +5,7 @@ function App() {
   const matchRoute = useMatchRoute()
   const isDashboard = matchRoute({ to: '/' })
   const isReview = matchRoute({ to: '/review' })
+  const isHistory = matchRoute({ to: '/history' })
 
   return (
     <main className="app">
@@ -16,6 +17,9 @@ function App() {
           </Link>
           <Link to="/review" className={`app__nav-link${isReview ? ' app__nav-link--active' : ''}`}>
             Revue
+          </Link>
+          <Link to="/history" className={`app__nav-link${isHistory ? ' app__nav-link--active' : ''}`}>
+            Historique
           </Link>
         </nav>
       </header>
