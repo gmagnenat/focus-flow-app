@@ -1,0 +1,39 @@
+{
+  "planPath": "docs/superpowers/plans/2026-03-31-daily-timesheet.md",
+  "tasks": [
+    {
+      "id": 9,
+      "subject": "Task 1: Day boundary logic in usePersistence",
+      "status": "completed",
+      "description": "**Goal:** When the app hydrates and `lastSavedAt` is before today, close the active timer's log at midnight, reset timer values, and stop the timer.\n\n**Files:**\n- Modify: `src/hooks/usePersistence.ts`\n- Create: `src/hooks/__tests__/usePersistence.test.ts`\n\n**Verify:** `npx vitest run src/hooks/__tests__/usePersistence.test.ts`\n\n```json:metadata\n{\"files\": [\"src/hooks/usePersistence.ts\", \"src/hooks/__tests__/usePersistence.test.ts\"], \"verifyCommand\": \"npx vitest run src/hooks/__tests__/usePersistence.test.ts\", \"acceptanceCriteria\": [\"day boundary closes active log at midnight\", \"timer values reset to zero\", \"activeTimerId set to null\", \"same-day hydration unchanged\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 10,
+      "subject": "Task 2: Dashboard today-only logs",
+      "status": "pending",
+      "blockedBy": [9],
+      "description": "**Goal:** Filter the Dashboard to show only today's logs and pass them to LogList and the summary export.\n\n**Files:**\n- Modify: `src/pages/Dashboard.tsx`\n\n**Verify:** `npx tsc --noEmit`\n\n```json:metadata\n{\"files\": [\"src/pages/Dashboard.tsx\"], \"verifyCommand\": \"npx tsc --noEmit\", \"acceptanceCriteria\": [\"dashboard shows only today logs\", \"summary uses today logs only\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 11,
+      "subject": "Task 3: Extract SummaryExport component",
+      "status": "pending",
+      "blockedBy": [10],
+      "description": "**Goal:** Extract the summary generation, parsing, format selection, and download logic from Dashboard into a shared SummaryExport component.\n\n**Files:**\n- Create: `src/components/SummaryExport.tsx`\n- Modify: `src/pages/Dashboard.tsx`\n\n**Verify:** `npx tsc --noEmit`\n\n```json:metadata\n{\"files\": [\"src/components/SummaryExport.tsx\", \"src/pages/Dashboard.tsx\"], \"verifyCommand\": \"npx tsc --noEmit\", \"acceptanceCriteria\": [\"shared component works\", \"dashboard uses it\", \"all export formats work\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 12,
+      "subject": "Task 4: History page",
+      "status": "pending",
+      "description": "**Goal:** Create a /history route showing all logs grouped by date, most recent first.\n\n**Files:**\n- Create: `src/pages/History.tsx`\n- Modify: `src/main.tsx`\n- Modify: `src/App.tsx`\n- Modify: `src/App.css`\n\n**Verify:** `npx tsc --noEmit`\n\n```json:metadata\n{\"files\": [\"src/pages/History.tsx\", \"src/main.tsx\", \"src/App.tsx\", \"src/App.css\"], \"verifyCommand\": \"npx tsc --noEmit\", \"acceptanceCriteria\": [\"route exists\", \"logs grouped by day\", \"day headers with totals\", \"edit/delete works\"], \"requiresUserVerification\": false}\n```"
+    },
+    {
+      "id": 13,
+      "subject": "Task 5: Weekly summary export on Review page",
+      "status": "pending",
+      "blockedBy": [11],
+      "description": "**Goal:** Add the SummaryExport component to the Review page, visible only on the week tab.\n\n**Files:**\n- Modify: `src/pages/Review.tsx`\n- Modify: `src/utils/insights.ts`\n\n**Verify:** `npx vitest run && npx tsc --noEmit`\n\n```json:metadata\n{\"files\": [\"src/pages/Review.tsx\", \"src/utils/insights.ts\"], \"verifyCommand\": \"npx vitest run && npx tsc --noEmit\", \"acceptanceCriteria\": [\"visible on week tab only\", \"uses week logs\", \"hidden on other tabs\"], \"requiresUserVerification\": false}\n```"
+    }
+  ],
+  "lastUpdated": "2026-03-31T12:00:00Z"
+}

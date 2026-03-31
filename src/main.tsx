@@ -6,6 +6,7 @@ import { LogProvider } from './context/LogContext'
 import App from './App'
 import { Dashboard } from './pages/Dashboard'
 import { Review } from './pages/Review'
+import { History } from './pages/History'
 import './index.css'
 
 const queryClient = new QueryClient()
@@ -13,8 +14,9 @@ const queryClient = new QueryClient()
 const rootRoute = createRootRoute({ component: App })
 const dashboardRoute = createRoute({ getParentRoute: () => rootRoute, path: '/', component: Dashboard })
 const reviewRoute = createRoute({ getParentRoute: () => rootRoute, path: '/review', component: Review })
+const historyRoute = createRoute({ getParentRoute: () => rootRoute, path: '/history', component: History })
 
-const routeTree = rootRoute.addChildren([dashboardRoute, reviewRoute])
+const routeTree = rootRoute.addChildren([dashboardRoute, reviewRoute, historyRoute])
 const router = createRouter({ routeTree })
 
 declare module '@tanstack/react-router' {
