@@ -1,9 +1,11 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { useLogContext } from '../context/LogContext'
 import { useInsights } from '../hooks/useInsights'
 import { StatsGrid } from '../components/StatsGrid'
 import { DailyChart } from '../components/DailyChart'
 import { AiNarrative } from '../components/AiNarrative'
+import { SummaryExport } from '../components/SummaryExport'
+import { getPeriodDates, filterLogsByRange } from '../utils/insights'
 import type { Period } from '../utils/insights'
 
 const PERIOD_LABELS: Record<Period, string> = {
@@ -16,6 +18,12 @@ export const Review = () => {
   const { logs, timerState } = useLogContext()
   const [period, setPeriod] = useState<Period>('week')
   const insights = useInsights(logs, period)
+
+  const weekLogs = useMemo(() => {
+    if (period !== 'week') return []
+    const { start, end } = getPeriodDates('week')
+    return filterLogsByRange(logs, start.getTime(), end.getTime())
+  }, [logs, period])
 
   const handleBackup = useCallback(() => {
     const blob = new Blob([JSON.stringify(logs, null, 2)], {
@@ -46,7 +54,11 @@ export const Review = () => {
 
       <StatsGrid insights={insights} />
       <DailyChart insights={insights} timerLabels={timerState.timerLabels} />
-      <AiNarrative insights={insights} logs={logs} />
+      <AiNarrative insights={insights} logs={logs} period={period} />
+
+      {period === 'week' && (
+        <SummaryExport logs={weekLogs} filenamePrefix="focusflow-weekly" />
+      )}
 
       <div className="review__footer">
         <button className="review__backup" type="button" onClick={handleBackup} disabled={logs.length === 0}>

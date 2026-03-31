@@ -859,10 +859,100 @@
   margin: 0;
 }
 
+.ai-narrative__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.ai-narrative__header .ai-narrative__icon {
+  margin-bottom: 0;
+}
+
+.ai-narrative__regenerate {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-3);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.15rem 0.45rem;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.ai-narrative__regenerate:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.ai-narrative__generate {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ai-narrative__generate:hover {
+  background: var(--surface-1);
+  border-color: var(--accent);
+}
+
+.ai-narrative--idle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ai-narrative--idle .ai-narrative__icon {
+  margin-bottom: 0;
+}
+
 .ai-narrative--loading .ai-narrative__text,
 .ai-narrative--empty .ai-narrative__text {
   color: var(--text-3);
   font-style: italic;
+}
+
+/* History Page */
+.history__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-1);
+  margin: 0 0 1rem;
+}
+
+.history__day {
+  margin-bottom: 1.5rem;
+}
+
+.history__day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.history__day-date {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-2);
+  text-transform: capitalize;
+}
+
+.history__day-total {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Review Footer */

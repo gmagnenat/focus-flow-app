@@ -1,26 +1,49 @@
 import { useMutation } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { generateReviewNarrative } from '../services/geminiClient'
 import type { PeriodInsights } from '../utils/insights'
+import type { Period } from '../utils/insights'
 import type { LogEntry } from '../types'
 
 interface AiNarrativeProps {
   insights: PeriodInsights
   logs: LogEntry[]
+  period: Period
 }
 
-export const AiNarrative = ({ insights, logs }: AiNarrativeProps) => {
+function getCacheKey(period: Period, totalSeconds: number): string {
+  return `ai-narrative:${period}:${totalSeconds}`
+}
+
+function getCached(period: Period, totalSeconds: number): string | null {
+  try {
+    return sessionStorage.getItem(getCacheKey(period, totalSeconds))
+  } catch {
+    return null
+  }
+}
+
+function setCache(period: Period, totalSeconds: number, text: string): void {
+  try {
+    sessionStorage.setItem(getCacheKey(period, totalSeconds), text)
+  } catch {
+    // sessionStorage full or unavailable — ignore
+  }
+}
+
+export const AiNarrative = ({ insights, logs, period }: AiNarrativeProps) => {
+  const [cached] = useState(() => getCached(period, insights.totalSeconds))
+
   const mutation = useMutation({
     mutationFn: () => generateReviewNarrative(insights, logs),
+    onSuccess: (text) => setCache(period, insights.totalSeconds, text),
   })
 
-  useEffect(() => {
-    if (insights.totalSeconds > 0) {
-      mutation.mutate()
-    }
-  // Only re-trigger when insights change meaningfully
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [insights.totalSeconds, insights.periodOverPeriodDelta])
+  const narrative = mutation.data ?? cached
+
+  const handleGenerate = useCallback(() => {
+    mutation.mutate()
+  }, [mutation])
 
   if (insights.totalSeconds === 0) {
     return (
@@ -49,10 +72,35 @@ export const AiNarrative = ({ insights, logs }: AiNarrativeProps) => {
     )
   }
 
+  if (narrative) {
+    return (
+      <div className="ai-narrative">
+        <div className="ai-narrative__header">
+          <div className="ai-narrative__icon">✦ Revue IA</div>
+          <button
+            className="ai-narrative__regenerate"
+            type="button"
+            onClick={handleGenerate}
+            title="Regenerer la revue"
+          >
+            ↻
+          </button>
+        </div>
+        <p className="ai-narrative__text">{narrative}</p>
+      </div>
+    )
+  }
+
   return (
-    <div className="ai-narrative">
-      <div className="ai-narrative__icon">✦ Revue IA</div>
-      <p className="ai-narrative__text">{mutation.data}</p>
+    <div className="ai-narrative ai-narrative--idle">
+      <div className="ai-narrative__icon">✦</div>
+      <button
+        className="ai-narrative__generate"
+        type="button"
+        onClick={handleGenerate}
+      >
+        Generer la revue IA
+      </button>
     </div>
   )
 }

@@ -32,7 +32,7 @@ const emptyInsights: PeriodInsights = {
   periodOverPeriodDelta: 0,
 }
 
-const filterLogsByRange = (
+export const filterLogsByRange = (
   logs: LogEntry[],
   start: number,
   end: number
